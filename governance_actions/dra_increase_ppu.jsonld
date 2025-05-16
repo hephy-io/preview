@@ -1,0 +1,74 @@
+{
+  "@context": {
+    "@language": "en",
+    "CIP100": "https://github.com/cardano-foundation/CIPs/blob/master/CIP-0100/README.md#",
+    "CIP108": "https://github.com/cardano-foundation/CIPs/blob/master/CIP-0108/README.md#",
+    "hashAlgorithm": "CIP100:hashAlgorithm",
+    "body": {
+      "@id": "CIP108:body",
+      "@context": {
+        "references": {
+          "@id": "CIP108:references",
+          "@container": "@set",
+          "@context": {
+            "GovernanceMetadata": "CIP100:GovernanceMetadataReference",
+            "Other": "CIP100:OtherReference",
+            "label": "CIP100:reference-label",
+            "uri": "CIP100:reference-uri",
+            "referenceHash": {
+              "@id": "CIP108:referenceHash",
+              "@context": {
+                "hashDigest": "CIP108:hashDigest",
+                "hashAlgorithm": "CIP100:hashAlgorithm"
+              }
+            }
+          }
+        },
+        "title": "CIP108:title",
+        "abstract": "CIP108:abstract",
+        "motivation": "CIP108:motivation",
+        "rationale": "CIP108:rationale"
+      }
+    },
+    "authors": {
+      "@id": "CIP100:authors",
+      "@container": "@set",
+      "@context": {
+        "name": "http://xmlns.com/foaf/0.1/name",
+        "witness": {
+          "@id": "CIP100:witness",
+          "@context": {
+            "witnessAlgorithm": "CIP100:witnessAlgorithm",
+            "publicKey": "CIP100:publicKey",
+            "signature": "CIP100:signature"
+          }
+        }
+      }
+    }
+  },
+  "authors": [],
+  "hashAlgorithm": "blake2b-256",
+  "body": {
+    "abstract": "A proposal to increase dRepActivity from 20 to 31 on Preview.",
+    "motivation": "This is a proposal specific to the Preview network and not intended as testing for any further changes to the PreProd or Mainnet networks. Currently, on the Preview testnet, the *dRepActivity* parameter is less than the *govActionLifetime* parameter. *dRepActivity* is currently set to 20 epochs while *govActionLifetime* is currently set to 30 epochs. Epochs on Preview last 1 day instead of 5 days (as found on PreProd and Mainnet) for testing purposes.",
+    "rationale": "This current setup is an issue as there is the possibility that a DRep could become “Inactive” after having cast their vote on a proposal and before that vote ends. For example, if they vote within the first 10 epochs of a proposal and do not vote on any other action during that proposals’ 30 epoch lifetime, the DRep will become inactive before the vote ends and thus their voting stake would be considered as abstain even if they had voted otherwise.\n\nThis situation is safeguarded on mainnet by the Constitutional Guardrail DRA-04 which states that “*dRepActivity* **must be** greater than *govActionLifetime*”. In this instance on Preview it appears to be an oversight left over from before the Plomin hardfork.\n\nIncreasing *dRepActivity* to 31 epochs on Preview would restore this Constitutional condition. By setting it to 31 epochs it will ensure that a DRep will remain “Active” for the duration of any vote that they participate in and it also ensures that future proposals aren’t held up by inactive vote stake that is still considered as “Active” for long periods. This is important as Preview is for testing and may not have the higher participation rates found on mainnet. ",
+    "references": [
+      {
+        "@type": "Other",
+        "label": "Interim Constitution (still the on-chain Constitution for Preview)",
+        "uri": "ipfs://bafkreifnwj6zpu3ixa4siz2lndqybyc5wnnt3jkwyutci4e2tmbnj3xrdm"
+      },
+      {
+        "@type": "Other",
+        "label": "Cardano Blockchain Ecosystem Constitution (Mainnet Constitution)",
+        "uri": "ipfs://bafkreiazhhawe7sjwuthcfgl3mmv2swec7sukvclu3oli7qdyz4uhhuvmy"
+      },
+      {
+        "@type": "Other",
+        "label": "X Discussion of this issue",
+        "uri": "https://x.com/Hornan7/status/1922996869300404532"
+      }
+    ],
+    "title": "Increase dRepActivity from 20 to 31"
+  }
+}
